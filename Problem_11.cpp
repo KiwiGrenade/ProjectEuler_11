@@ -1,53 +1,6 @@
 #include <iostream>
 using namespace std;
 
-int verticalSum(int grid[20][20])
-{
-    int number[4],i=0,biggestSum=0,sum=1;
-    for (int x=0;x<20;x++)
-    {
-        for (int y=0; y<20;y++)
-        {
-            number[i]=grid[x][y];
-            i++;
-            if (i==4)
-            {
-                sum=(number[0]*number[1]*number[2]*number[3]);
-                if(sum>biggestSum)
-                {
-                    biggestSum=sum;
-                }
-                sum=0;
-                i=0;
-            }
-        }
-    }
-    return biggestSum;
-}
-int horizontalSum(int grid[20][20])
-{
-    int number[4],i=0,biggestSum=0,sum=1;
-    for (int y=0;y<20;y++)
-    {
-        for (int x=0; x<20;x++)
-        {
-            number[i]=grid[x][y];
-            i++;
-            if (i==4)
-            {
-                sum=(number[0]*number[1]*number[2]*number[3]);
-                if(sum>biggestSum)
-                {
-                    biggestSum=sum;
-                }
-                sum=0;
-                i=0;
-            }
-        }
-    }
-    return biggestSum;
-}
-
 int main()
 {
     int grid [20][20]=
@@ -73,7 +26,46 @@ int main()
         {20,73,35,29,78,31,90,1,74,31,49,71,48,86,81,16,23,57,5,54},
         {1,70,54,71,83,51,54,69,16,92,33,48,61,43,52,1,89,19,67,48},
     };
-    cout << verticalSum(grid) << '\n';
-    cout << horizontalSum(grid) << '\n';
+    int sum=0,biggestSum=0;
+
+    //the coordinats places in the array are switched, first comes y and then comes x
+    for (int y=0;y<20;y++)
+    {
+        for (int x=0;x<20;x++)
+        {
+            //check if there is enough space in the grid
+            if((x+3)<20)
+            {
+                //multiply the pivot and three numbers to the right
+                sum=grid[y][x]*grid[y][x+1]*grid[y][x+2]*grid[y][x+3];
+                if(sum>biggestSum){biggestSum=sum;}
+            }
+
+            //check if there is enough space in the grid
+            if((y+3)<20)
+            {
+                //multiply the pivot and three numbers down
+                sum=grid[y][x]*grid[y+1][x]*grid[y+2][x]*grid[y+3][x];
+                if(sum>biggestSum){biggestSum=sum;}
+            }
+
+            //check if there is enough space in the grid
+            if((y+3)<20 && (x+3)<20)
+            {
+                //multiply the pivot and three numbers diagonally (down and right)
+                sum=grid[y][x]*grid[y+1][x+1]*grid[y+2][x+2]*grid[y+3][x+3];
+                if(sum>biggestSum){biggestSum=sum;}
+            }
+
+            //check if there is enough space in the grid
+            if((y+3)<20 && (x-3)>0)
+            {
+                //multiply the pivot and three numbers diagonally (down and left)
+                sum=grid[y][x]*grid[y+1][x-1]*grid[y+2][x-2]*grid[y+3][x-3];
+                if(sum>biggestSum){biggestSum=sum;}
+            }
+        }
+    }
+    cout << biggestSum;
     return 0;
 }
